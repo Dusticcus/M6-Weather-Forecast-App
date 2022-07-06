@@ -1,0 +1,44 @@
+
+* {
+    text-decoration: none;
+    list-style: none;
+}
+
+body {
+    text-decoration: none;
+    list-style: none;
+}
+
+#top-banner {
+    justify-content: center;
+    background-color: blue;
+    color: white;
+}
+
+#get-city-button {
+    width: 100%;
+    margin-top: 10px;
+    border-bottom: 2px solid black;
+
+    
+}
+
+textarea {
+    width: 100%;
+}
+
+#fiveDayForecastSection {
+    /* background-color: darkblue; */
+    color: white;
+    text-decoration: none;
+    list-style: none;
+}
+
+#fiveDayForecastSection {
+/* height: 100%; */
+}
+
+.col-2 {
+    margin: 10px;
+    background-color: blue;
+}
