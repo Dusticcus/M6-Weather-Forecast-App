@@ -33,13 +33,13 @@ li {
     background: rgb(17, 42, 78);
     width: 100%;
     margin-top: 10px;
-    border-bottom: 2px solid black;
+
 }
 
 #get-city-button {
     width: 100%;
     margin-top: 10px;
-    border-bottom: 2px solid black;
+
 }
 
 textarea {
@@ -52,7 +52,6 @@ textarea:focus{
   }
 
   #todaysWeatherBorder {
-    border: 1px solid black;
     height: 40vh;
     margin-top: 15px;
   }
