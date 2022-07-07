@@ -9,23 +9,53 @@ body {
     list-style: none;
 }
 
+.container-fluid {
+    height: 100vh;
+}
+
+ul {
+    margin: 0;
+    padding:0;
+}
+
+li {
+    margin-bottom: 5px;
+    font-size: 1.5vw;
+}
+
 #top-banner {
     justify-content: center;
-    background-color: blue;
+    background-color: rgb(17, 42, 78);
     color: white;
+}
+
+.btn-primary {
+    background: rgb(17, 42, 78);
+    width: 100%;
+    margin-top: 10px;
+    border-bottom: 2px solid black;
 }
 
 #get-city-button {
     width: 100%;
     margin-top: 10px;
     border-bottom: 2px solid black;
-
-    
 }
 
 textarea {
     width: 100%;
+    resize: none;
 }
+
+textarea:focus{
+    text-align:left;
+  }
+
+  #todaysWeatherBorder {
+    border: 1px solid black;
+    height: 40vh;
+    margin-top: 15px;
+  }
 
 #fiveDayForecastSection {
     /* background-color: darkblue; */
@@ -40,5 +70,5 @@ textarea {
 
 .col-2 {
     margin: 10px;
-    background-color: blue;
+    background-color: rgb(17, 42, 78);
 }

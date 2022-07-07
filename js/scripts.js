@@ -11,7 +11,7 @@
 // THEN I am again presented with current and future conditions for that city
 var appid = '89d53e26dcb182abf23165adbc6cc1e9';
 
-var today = moment().format("DD/MM/YYYY");
+var today = moment().format("M/DD/YYYY");
 console.log(today);
 
 var todaysWeatherSection = $('#todaysWeatherSection');
@@ -22,15 +22,54 @@ var cityName;
 var getCityButton = $("#get-city-button");
 var txt;
 var previousSearches = [];
-getCityButton.on('click', function (e) {
 
-    txt = $("#cityInput").val();
-    e.preventDefault();
-    // console.log(txt);
-    getlatlon();
-    previousSearches.push(txt);
-    localStorage.setItem("pSearches", txt);
+function writePreviousSearches() {
+    if (localStorage.getItem("pSearches") === null) {
+        localStorage.setItem("pSearches", 'austin');
+        writePreviousSearches();
+    } else {
+        var localPreviousSearchArray = localStorage.getItem("pSearches");
+        var newPreviousSearchArray = localPreviousSearchArray.split(",");
+        var completeSearches = $.merge($.merge([], previousSearches), newPreviousSearchArray);
+
+        localStorage.setItem("pSearches", completeSearches);
+        console.log(completeSearches);
+        previousSearches = [];
+
+        var previousCities = $('#previousCities');
+        previousCities.empty();
+        for (i = 0; i < completeSearches.length; i++) {
+            previousCities.append('<li><button class="recentSearch btn-primary">' + completeSearches[i] + '</button></li>');
+
+        }
+        $('.recentSearch').on('click', function (event) {
+            event.preventDefault();
+            var button_text = $(this).text();
+            txt = button_text;
+            getlatlon();
+        });
+
+    }
+}
+writePreviousSearches();
+
+
+
+
+
+
+getCityButton.on('click', function (e) {
+    txt = $("#cityInput").val().trim();
+    if (txt) {
+        previousSearches.push(txt);
+        e.preventDefault();
+        getlatlon();
+        writePreviousSearches();
+    } else {
+
+    }
 });
+
 
 
 function getlatlon() {
@@ -57,9 +96,6 @@ function getTodaysForecast() {
         console.log("data:");
         console.log(data);
 
-
-
-
         // GET TODAYS WEATHER INFORMATION
         // Weather Icon
         var weatherIcon = data.current.weather[0].icon;
@@ -68,6 +104,16 @@ function getTodaysForecast() {
         var weatherIconUrl = "https://openweathermap.org/img/w/" + weatherIcon + ".png";
         // Day Temperature
         var dayTemp = data.current.temp;
+        if (dayTemp > 90) {
+            var background = $(document.body);
+            background.css("background", "radial-gradient(circle, rgba(253,29,29,1) 38%, rgba(131,58,180,1) 38%, rgba(252,176,69,1) 100%)");
+        } else if (dayTemp < 70) {
+            var background = $(document.body);
+            background.css("background", "radial-gradient(circle, rgba(131,58,180,1) 38%, rgba(29,240,253,1) 40%, rgba(69,76,252,1) 63%)");
+        } else {
+            var background = $(document.body);
+            background.css("background", "radial-gradient(circle, rgba(180,127,58,1) 38%, rgba(29,253,141,1) 38%, rgba(61,111,230,1) 58%, rgba(69,76,252,1) 63%)");
+        }
         // // wind
         var windSpeed = data.current.wind_speed;
         // // humidity index
@@ -75,9 +121,9 @@ function getTodaysForecast() {
         // // UV
         var uvIndex = data.current.uvi;
         todaysWeatherSection.empty();
-        todaysWeatherSection.append('<div id="todaysWeatherData" class="col-12">' + cityName + " " + today + " " + " " + '<img id="wicon" src="' + weatherIconUrl + '" alt="Weather icon"></div>');
+        todaysWeatherSection.append('<div id="todaysWeatherData" class="col-12"><h2>' + cityName + " (" + today + ") " + '<img id="wicon" src="' + weatherIconUrl + '" alt="Weather icon"></h2></div>');
         var todaysWeatherData = $('#todaysWeatherData');
-        var newUL = $('<ul id="todaysWeatherData"><li>' + 'Temp: ' + dayTemp + '</li>' +
+        var newUL = $('<ul id="todaysWeatherData"><li>' + 'Temp: ' + dayTemp + ' &#8457</li>' +
             '<li>' + 'Wind: ' + windSpeed + '</li>' +
             '<li>' + 'Humidity: ' + humidityIndex + '</li>' +
             '<li>' + 'UV Index: ' + uvIndex + '</li></ul>');
@@ -89,6 +135,7 @@ function getTodaysForecast() {
 }
 
 function getFiveDayForecast() {
+
     var weatherApiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=imperial&appid=${appid}`;
     fetch(weatherApiUrl).then(function (response) {
         return response.json();
@@ -97,19 +144,9 @@ function getFiveDayForecast() {
         var fiveDayForecastSection = $('#fiveDayForecastSection');
         fiveDayForecastSection.empty();
         for (i = 1; i <= 5; i++) {
-            fiveDayForecastSection.append('<div class="col-2">' + '<ul><li>' + today + '</li><li>' + '<img id="wicon" src="https://openweathermap.org/img/w/' + data.daily[i].weather[0].icon + '.png" alt="Weather icon">' + '</li><li>' + '</li><li>Temp: ' + data.daily[i].temp.day + '</li><li>Wind: ' + data.daily[i].wind_speed + '</li><li>Humidity: ' + data.daily[i].humidity + '</li></ul></div>');
-            // $('.col-2').append('<ul><li>' + '<img id="wicon" src="https://openweathermap.org/img/w/' + data.daily[i].weather[0].icon + '.png" alt="Weather icon">' + '</li><li>' + '</li><li>Temp: ' + data.daily[i].temp.day + '</li><li>Wind: ' + data.daily[i].wind_speed + '</li><li>Humidity: ' + data.daily[i].humidity + '</li></ul>');
-
+            var new_date = moment(today, "M/DD/YYYY").add(i, "days").format("M/DD/YYYY");
+            fiveDayForecastSection.append(
+                '<div class="col-2">' + '<ul><li>' + new_date + '</li><li>' + '<img id="wicon" src="https://openweathermap.org/img/w/' + data.daily[i].weather[0].icon + '.png" alt="Weather icon">' + '</li><li>' + '</li><li>Temp: ' + data.daily[i].temp.day + ' &#8457</li><li>Wind: ' + data.daily[i].wind_speed + '</li><li>Humidity: ' + data.daily[i].humidity + '</li></ul></div>');
         }
-
-
-
-        // for (i = 1; i > 5; i++) {
-        //     $('.col-2 ul li:').append();
-        // }
-
-
-
-
     })
 }
