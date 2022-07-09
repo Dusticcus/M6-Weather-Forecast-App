@@ -13,7 +13,7 @@
     - <img src="./assets/readmeImages/landing Page.png" style="width: 300px">
 - Search for a new city by typing a city name in the box and clicking the SEARCH button
     - <img src="./assets/readmeImages/newCity.png" style="width: 300px">
-- The page will change according to the city and its current temperature
+- The page will change according to the city and its current temperature, as well as add your search as a button below so you can quickly switch to and from that location information
     - <img src="./assets/readmeImages/afterSearch.png" style="width: 300px">
 - The current temperature will effect the background based on if its HOT, COLD, or MODERATE
     - COLD
