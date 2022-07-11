@@ -126,8 +126,16 @@ function getTodaysForecast() {
         var newUL = $('<ul id="todaysWeatherData"><li>' + 'Temp: ' + dayTemp + ' &#8457</li>' +
             '<li>' + 'Wind: ' + windSpeed + '</li>' +
             '<li>' + 'Humidity: ' + humidityIndex + '</li>' +
-            '<li>' + 'UV Index: ' + uvIndex + '</li></ul>');
+            '<li class="UVI">' + 'UV Index: ' + uvIndex + '</li></ul>');
         todaysWeatherSection.append(newUL);
+
+        if (uvIndex < 2) {
+            $('.UVI').css("background-color", "green")
+        } else if (uvIndex > 2 && uvIndex < 3) {
+            $('.UVI').css("background-color", "yellow")
+        } else if (uvIndex >= 3) {
+            $('.UVI').css("background-color", "red")
+        }
         // var todaysWeatherData = $('#todaysWeatherData');
         // todaysWeatherSection.append(
         // )
@@ -146,7 +154,7 @@ function getFiveDayForecast() {
         for (i = 1; i <= 5; i++) {
             var new_date = moment(today, "M/DD/YYYY").add(i, "days").format("M/DD/YYYY");
             fiveDayForecastSection.append(
-                '<div class="col-2">' + '<ul><li>' + new_date + '</li><li>' + '<img id="wicon" src="https://openweathermap.org/img/w/' + data.daily[i].weather[0].icon + '.png" alt="Weather icon">' + '</li><li>' + '</li><li>Temp: ' + data.daily[i].temp.day + ' &#8457</li><li>Wind: ' + data.daily[i].wind_speed + '</li><li>Humidity: ' + data.daily[i].humidity + '</li></ul></div>');
+                '<div id="fiveDayBoxes" class="col-md-2 col-5">' + '<ul><li>' + new_date + '</li><li>' + '<img id="wicon" src="https://openweathermap.org/img/w/' + data.daily[i].weather[0].icon + '.png" alt="Weather icon">' + '</li><li>' + '</li><li>Temp: ' + data.daily[i].temp.day + ' &#8457</li><li>Wind: ' + data.daily[i].wind_speed + '</li><li>Humidity: ' + data.daily[i].humidity + '</li></ul></div>');
         }
     })
 }

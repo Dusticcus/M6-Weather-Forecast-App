@@ -67,7 +67,13 @@ textarea:focus{
 /* height: 100%; */
 }
 
-.col-2 {
+#fiveDayBoxes {
     margin: 10px;
     background-color: rgb(17, 42, 78);
+}
+
+.UVI {
+    margin:0;
+    padding:0;
+    width: 15%;
 }
